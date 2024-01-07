@@ -1,0 +1,54 @@
+ENTITY, ATTRIBUTES AND TABLE STRUCTURE
+--------------------------------------->
+
+Database: bookmyshow
+Entity Names:
+  1. users
+  2. theatres
+  3. movies
+  4. shows
+
+1. users entity attributes:
+  user_id, user_name, mobile_no, email, password, createdAt
+
+2. theatres entity attributes:
+  theatre_id, theatre_name, city, theatre_location, theatre_rating
+
+3. movies entity attributes:
+  movie_id, movie_name, movie_duration, movie_rating, movie_release_date, 
+
+4. shows entity attributes:
+  show_id, show_time, show_date
+
+<------------------------------------END--------------------------------------------------->
+
+RELATIONSHIP B/W TABLES:
+------------------------->
+
+1. theatres vs movies:
+   1 Theatre can multiple Movies to run: (1:M)
+   1 Movie can run in multiple Theatre: (1:M)
+
+    Final Relationship b/w Theatres vs. Movies: (M:M)
+
+2. movies vs shows:
+   1 Movie can have multiple shows: (1:M)
+   1 Show can only run one Movie: (1:1)
+   
+    Final Relationship b/w Movies vs. Shows: (1:M)
+
+3. theatres vs shows:
+   1 Theatre can have multiple shows: (1:M)
+   1 Show can run on multiple Theatres: (1:M)
+   
+    Final Relationship b/w Theatres vs. Shows: (M:M)
+<-------------------------------------END--------------------------------------------->
+
+MAPPING TABLES
+---------------->
+
+TheatresMoviesMappingTable:
+  theatre_id, movie_id
+
+MoviesShowsMappingTable:
+  movie_id, show_id
