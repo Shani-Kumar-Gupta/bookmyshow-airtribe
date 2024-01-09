@@ -41,3 +41,14 @@ CREATE TABLE shows (
   show_date DATE NOT NULL,
   PRIMARY KEY (show_id)
 );
+
+/* MAPPING Tables */
+
+CREATE TABLE theatresMoviesMapping (
+  show_id INT NOT NULL,
+  theatre_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  FOREIGN KEY (show_id) REFERENCES shows(show_id),
+  FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id)
+  FOREIGN KEY (movie_id) REFERENCES movies(movie_id)
+);
