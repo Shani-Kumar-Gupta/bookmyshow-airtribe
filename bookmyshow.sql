@@ -1,6 +1,9 @@
 CREATE DATABASE bookmyshow;
+
 USE bookmyshow;
-SELECT DATABASE();
+
+SELECT
+  DATABASE();
 
 /* Table Creation */
 /* USERS Table */
@@ -43,13 +46,91 @@ CREATE TABLE shows (
 );
 
 /* MAPPING Tables */
-
-CREATE TABLE theatresMoviesMapping (
+CREATE TABLE theatresMoviesShowsMapping (
   show_id INT NOT NULL,
   theatre_id INT NOT NULL,
   movie_id INT NOT NULL,
   FOREIGN KEY (show_id) REFERENCES shows(show_id),
-  FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id)
-  FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
+  FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id) FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
   UNIQUE (show_id, theatre_id, movie_id)
 );
+
+/* Insert Data to Users Table */
+INSERT INTO
+  users (user_id, user_name, mobile_no, email, password)
+VALUES
+  (
+    101,
+    'ShaniKGupta',
+    '7054048089',
+    'shani.gupta_cs@outlook.com',
+    'test@12345'
+  ),
+  (
+    102,
+    'Aman',
+    '9875583734',
+    'aman@gmail.com',
+    'aman@admin'
+  );
+
+/* Insert Data to Theatres Table */
+INSERT INTO
+  theatres (
+    theatre_id,
+    theatre_name,
+    city,
+    theatre_location,
+    theatre_rating
+  )
+VALUES
+  (
+    201,
+    'PVR Cinemas Pvt Ltd',
+    'Gurgaon',
+    'Golf Course Rd',
+    '4'
+  ),
+  (
+    201,
+    'Inox Cinema',
+    'Gurgaon',
+    'Sapphire Mall NH-8',
+    '4.4'
+  );
+
+/* Insert Data to Movies Table */
+INSERT INTO
+  movies (
+    movie_id,
+    movie_name,
+    movie_duration,
+    movie_rating,
+    movie_release_date
+  )
+VALUES
+  (301, 'Salaar', '2:30:45', '4.4', '02-01-2024'),
+  (302, 'Dunki', '2:15:25', '4', '23-12-2023');
+
+/* Insert Data to Shows Table */
+INSERT INTO
+  shows (show_id, show_time, show_date)
+VALUES
+  (401, '01:30', '20-01-2024'),
+  (402, '4:30', '23-01-2024');
+
+/* Mapping Table Data Insertion */
+INSERT INTO
+  theatresMoviesShowsMapping (show_id, theatre_id, movie_id)
+VALUES
+  (401, 201, 301),
+  (402, 202, 302);
+
+/* Drop Tables If you want */
+DROP TABLE theatres;
+
+DROP TABLE movies;
+
+DROP TABLE shows;
+
+DROP TABLE theatresMoviesShowsMapping;
