@@ -50,5 +50,6 @@ CREATE TABLE theatresMoviesMapping (
   movie_id INT NOT NULL,
   FOREIGN KEY (show_id) REFERENCES shows(show_id),
   FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id)
-  FOREIGN KEY (movie_id) REFERENCES movies(movie_id)
+  FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
+  UNIQUE (show_id, theatre_id, movie_id)
 );
