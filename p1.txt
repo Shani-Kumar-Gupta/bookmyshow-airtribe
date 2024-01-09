@@ -47,8 +47,7 @@ RELATIONSHIP B/W TABLES:
 MAPPING TABLES
 ---------------->
 
-TheatresMoviesMappingTable:
-  theatre_id, movie_id
+As per above mentioned relationship, it's clearly shown that we can make one mapping table becuase each table making M:M:M relationship between them:
 
-MoviesShowsMappingTable:
-  movie_id, show_id
+TheatresMoviesShowsMappingTable:
+  show_id, theatre_id, movie_id
