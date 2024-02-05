@@ -182,6 +182,9 @@ VALUES
   (408, '6 PM', '2024-02-15', 303, 501),
   (409, '9 AM', '2024-02-17', 304, 501),
   (410, '12 PM', '2024-02-18', 304, 501);
+  
+/* List all shows */
+SELECT * FROM shows;
 
 /* Insert Theatres and Shows mapping table */
 INSERT INTO theatresShowsMapping (id, show_id, theatre_id) VALUES 
@@ -202,7 +205,11 @@ INSERT INTO theatresShowsMapping (id, show_id, theatre_id) VALUES
 SELECT
   *
 FROM
-  theatres;
+  theatresShowsMapping
+JOIN shows ON theatresShowsMapping.show_id = shows.show_id
+JOIN theatres ON theatresShowsMapping.theatre_id = theatres.theatre_id
+JOIN movies ON shows.movie_id = movies.movie_id
+AND theatresShowsMapping.theatre_id = 201 AND shows.show_date = '2024-02-09';
 
 /* Drop Tables If you want */
 DROP TABLE theatres;
@@ -210,5 +217,7 @@ DROP TABLE theatres;
 DROP TABLE movies;
 
 DROP TABLE shows;
+
+DROP TABLE screens;
 
 DROP TABLE theatresMoviesShowsMapping;

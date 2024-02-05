@@ -1,2 +1,10 @@
 P2 - Write a query to list down all the shows on a given date at a given theatre along with their respective show timings.
 
+SELECT
+  *
+FROM
+  theatresShowsMapping
+JOIN shows ON theatresShowsMapping.show_id = shows.show_id
+JOIN theatres ON theatresShowsMapping.theatre_id = theatres.theatre_id
+JOIN movies ON shows.movie_id = movies.movie_id
+AND theatresShowsMapping.theatre_id = 201 AND shows.show_date = '2024-02-09';
