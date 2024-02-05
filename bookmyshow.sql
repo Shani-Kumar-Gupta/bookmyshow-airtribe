@@ -32,6 +32,7 @@ CREATE TABLE movies (
   movie_id INT NOT NULL AUTO_INCREMENT,
   movie_name VARCHAR(100) NOT NULL UNIQUE,
   movie_duration TIME NOT NULL,
+  movie_language VARCHAR(50) NOT NULL,
   movie_rating FLOAT,
   movie_release_date DATE,
   PRIMARY KEY (movie_id)
@@ -105,12 +106,13 @@ INSERT INTO
     movie_id,
     movie_name,
     movie_duration,
+    movie_language,
     movie_rating,
     movie_release_date
   )
 VALUES
-  (301, 'Salaar', '2:30:45', '4.4', '02-01-2024'),
-  (302, 'Dunki', '2:15:25', '4', '23-12-2023');
+  (301, 'Salaar', '2:30:45', 'Hindi', '4.4', '02-01-2024'),
+  (302, 'Dunki', '2:15:25', 'Hindi', '4', '23-12-2023');
 
 /* Insert Data to Shows Table */
 INSERT INTO
@@ -125,6 +127,12 @@ INSERT INTO
 VALUES
   (401, 201, 301),
   (402, 202, 302);
+
+/*
+P2 - Write a query to list down all the shows on a given date at a given theatre along with their respective show timings.
+*/
+
+SELECT * FROM theatres;
 
 /* Drop Tables If you want */
 DROP TABLE theatres;
