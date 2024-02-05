@@ -12,9 +12,9 @@ TASK 2 - Write a query to list down all the shows on a given date at a given the
 
 As per the problem statement analysis, we required the below entities to cater to the above-mentioned functionality-
 ```bash
-  1. users
-  2. theatres
-  3. movies
+  1. theatres
+  2. movies
+  3. screens
   4. shows
 ```
 
