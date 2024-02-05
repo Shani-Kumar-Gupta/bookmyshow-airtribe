@@ -1,8 +1,0 @@
-1. Get all the theatre list basis city
-  getTheatreListByCity();
-
-2. Get all the movies list basis theatre and date selection:
-  getMoviesByTheatreNameandDate();
-
-3. Get all the shows date and time for specific selected movie in particular theatre:
-  getShowDetailsByTheatreSelectedMovie();

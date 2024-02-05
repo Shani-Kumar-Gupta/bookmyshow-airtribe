@@ -3,79 +3,45 @@ ENTITY, ATTRIBUTES AND TABLE STRUCTURE
 
 Database: bookmyshow
 Entity Names:
-  1. users
-  2. theatres
-  3. movies
-  4. shows
+  1. theatres
+  2. movies
+  3. shows
+  4. screens
 
-1. users entity attributes:
-  user_id, user_name, mobile_no, email, password, createdAt
+1. theatres entity attributes:
+  theatre_id (PK), theatre_name, city, theatre_location, theatre_rating
 
-2. theatres entity attributes:
-  theatre_id, theatre_name, city, theatre_location, theatre_rating
+2. movies entity attributes:
+  movie_id (PK), movie_name, movie_duration, movie_rating, movie_release_date, 
 
-3. movies entity attributes:
-  movie_id, movie_name, movie_duration, movie_rating, movie_release_date, 
+3. shows entity attributes:
+  show_id (PK), show_time, show_date, movie_id (FK), screen_id (FK)
 
-4. shows entity attributes:
-  show_id, show_time, show_date
+4. screens entity attributes:
+  screen_id (PK), screen_type
+
 
 <------------------------------------END--------------------------------------------------->
 
 RELATIONSHIP B/W TABLES:
 ------------------------->
 
-1. theatres vs movies:
-   1 Theatre can multiple Movies to run: (1:M)
-   1 Movie can run in multiple Theatre: (1:M)
+Kindly refer DM_Problem Solving Case_Bookmyshow pdf for relationship mapping and mapping table
 
-    Final Relationship b/w Theatres vs. Movies: (M:M)
-
-2. movies vs shows:
-   1 Movie can have multiple shows: (1:M)
-   1 Show can only run one Movie: (1:1)
-   
-    Final Relationship b/w Movies vs. Shows: (1:M)
-
-3. theatres vs shows:
-   1 Theatre can have multiple shows: (1:M)
-   1 Show can run on multiple Theatres: (1:M)
-   
-    Final Relationship b/w Theatres vs. Shows: (M:M)
 <-------------------------------------END--------------------------------------------->
-
-MAPPING TABLES
----------------->
-
-As per above mentioned relationship, it's clearly shown that we can make one mapping table becuase each table making M:M:M relationship between them:
-
-TheatresMoviesShowsMappingTable:
-  show_id, theatre_id, movie_id
 
 
 /*
 SQL Queries:
 */
 
-CREATE DATABASE bookmyshow;
+CREATE DATABASE bookmyshow_db1;
 
-USE bookmyshow;
+USE bookmyshow_db1;
 
-SELECT
-  DATABASE();
+SELECT DATABASE();
 
 /* Table Creation */
-/* USERS Table */
-CREATE TABLE users (
-  user_id INT NOT NULL AUTO_INCREMENT,
-  user_name VARCHAR(50) NOT NULL,
-  mobile_no VARCHAR(10) UNIQUE,
-  email VARCHAR(100) NOT NULL UNIQUE,
-  password VARCHAR(50) NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (user_id)
-);
-
 /* THEATRES Table */
 CREATE TABLE theatres (
   theatre_id INT NOT NULL AUTO_INCREMENT,
@@ -90,48 +56,42 @@ CREATE TABLE theatres (
 CREATE TABLE movies (
   movie_id INT NOT NULL AUTO_INCREMENT,
   movie_name VARCHAR(100) NOT NULL UNIQUE,
-  movie_duration TIME NOT NULL,
+  movie_duration VARCHAR(15) NOT NULL,
+  movie_language VARCHAR(50) NOT NULL,
   movie_rating FLOAT,
   movie_release_date DATE,
   PRIMARY KEY (movie_id)
 );
 
+/* Screen Table */
+CREATE TABLE screens (
+  screen_id INT NOT NULL AUTO_INCREMENT,
+  screen_type VARCHAR(10) NOT NULL,
+  PRIMARY KEY (screen_id)
+);
+
 /* SHOWS Table */
 CREATE TABLE shows (
   show_id INT NOT NULL AUTO_INCREMENT,
-  show_time TIME NOT NULL,
+  show_time VARCHAR(30) NOT NULL,
   show_date DATE NOT NULL,
-  PRIMARY KEY (show_id)
+  movie_id INT NOT NULL,
+  screen_id INT NOT NULL,
+  PRIMARY KEY (show_id),
+  FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
+  FOREIGN KEY (screen_id) REFERENCES screens(screen_id)
 );
 
 /* MAPPING Tables */
-CREATE TABLE theatresMoviesShowsMapping (
+CREATE TABLE theatresShowsMapping (
+  id INT NOT NULL AUTO_INCREMENT,
   show_id INT NOT NULL,
   theatre_id INT NOT NULL,
-  movie_id INT NOT NULL,
   FOREIGN KEY (show_id) REFERENCES shows(show_id),
-  FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id) FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
-  UNIQUE (show_id, theatre_id, movie_id)
+  FOREIGN KEY (theatre_id) REFERENCES theatres(theatre_id),
+  UNIQUE (show_id, theatre_id),
+  PRIMARY KEY (id)
 );
-
-/* Insert Data to Users Table */
-INSERT INTO
-  users (user_id, user_name, mobile_no, email, password)
-VALUES
-  (
-    101,
-    'ShaniKGupta',
-    '7054048089',
-    'shani.gupta_cs@outlook.com',
-    'test@12345'
-  ),
-  (
-    102,
-    'Aman',
-    '9875583734',
-    'aman@gmail.com',
-    'aman@admin'
-  );
 
 /* Insert Data to Theatres Table */
 INSERT INTO
@@ -148,15 +108,39 @@ VALUES
     'PVR Cinemas Pvt Ltd',
     'Gurgaon',
     'Golf Course Rd',
-    '4'
+    4
   ),
   (
-    201,
+    202,
     'Inox Cinema',
     'Gurgaon',
     'Sapphire Mall NH-8',
-    '4.4'
+    4.4
+  ),
+  (
+    203,
+    'Apna Cinema',
+    'Varanasi',
+    'Main Road, 3/14',
+    3.4
+  ),
+  (
+    204,
+    'Lulu Cinema',
+    'Noida',
+    'Test location',
+    4.0
+  ),
+  (
+    205,
+    'Anupama Theatre',
+    'Bengaluru',
+    'S C Road',
+    4.1
   );
+  
+/* Show details of all available theatres */
+SELECT * FROM theatres;
 
 /* Insert Data to Movies Table */
 INSERT INTO
@@ -164,32 +148,87 @@ INSERT INTO
     movie_id,
     movie_name,
     movie_duration,
+    movie_language,
     movie_rating,
     movie_release_date
   )
 VALUES
-  (301, 'Salaar', '2:30:45', '4.4', '02-01-2024'),
-  (302, 'Dunki', '2:15:25', '4', '23-12-2023');
+  (
+    301,
+    'Salaar',
+    '2 Hours 30 Min',
+    'Hindi',
+    4.4,
+    '2024-01-02'
+  ),
+  (
+    302,
+    'Dunki',
+    '2 Hours',
+    'Hindi',
+    4,
+    '2023-12-23'
+  ),
+  (
+    303,
+    'Fighter',
+    '2 Hours 45 Min',
+    'Hindi',
+    4.2,
+    '2024-01-08'
+  ),
+  (
+    304,
+    'Inception',
+    '1 Hours 45 Min',
+    'English',
+    4.7,
+    '2022-10-24'
+  ),
+  (
+    305,
+    'Oppenheimer',
+    '2 Hours 10 Min',
+    'English',
+    4.9,
+    '2023-12-11'
+  );
+
+/* Show list of all movies */
+SELECT * FROM movies;
+
+/* Insert data into screen table */
+INSERT INTO screens (screen_id, screen_type) VALUES
+(501, '2D'),
+(502, '3D');
+
+/* List all available screens */
+SELECT * FROM screens;
 
 /* Insert Data to Shows Table */
 INSERT INTO
-  shows (show_id, show_time, show_date)
+  shows (show_id, show_time, show_date, movie_id, screen_id)
 VALUES
-  (401, '01:30', '20-01-2024'),
-  (402, '4:30', '23-01-2024');
+  (401, '3 PM', '2024-02-09', 301, 501),
+  (402, '6 PM', '2024-02-09', 302, 501),
+  (403, '9 AM', '2024-02-15', 303, 502),
+  (404, '12 PM', '2024-03-01', 304, 501),
+  (405, '12 PM', '2024-02-29', 305, 502),
+  (406, '3 PM', '2024-02-29', 302, 502),
+  (407, '9 PM', '2024-02-21', 302, 501),
+  (408, '6 PM', '2024-02-15', 303, 501),
+  (409, '9 AM', '2024-02-17', 304, 501),
+  (410, '12 PM', '2024-02-18', 304, 501);
 
-/* Mapping Table Data Insertion */
-INSERT INTO
-  theatresMoviesShowsMapping (show_id, theatre_id, movie_id)
-VALUES
-  (401, 201, 301),
-  (402, 202, 302);
-
-/* Drop Tables If you want */
-DROP TABLE theatres;
-
-DROP TABLE movies;
-
-DROP TABLE shows;
-
-DROP TABLE theatresMoviesShowsMapping;
+/* Insert Theatres and Shows mapping table */
+INSERT INTO theatresShowsMapping (id, show_id, theatre_id) VALUES 
+(601, 401, 201),
+(602, 402, 202),
+(603, 403, 203),
+(604, 404, 204),
+(605, 405, 205),
+(606, 406, 202),
+(607, 407, 201),
+(608, 408, 201),
+(609, 409, 201),
+(610, 410, 205);
